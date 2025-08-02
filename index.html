@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Client CRM Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body data-theme="dark">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-gold">●</span> <span>Client CRM</span>
+    </div>
+    <button id="themeSwitcher" class="theme-switch" title="Switch theme">
+      <i id="themeIcon" data-lucide="sun"></i>
+    </button>
+  </header>
+  <div id="messageBox" class="message-box"></div>
+  <main class="dashboard-main">
+    <section class="stats-cards">
+      <div class="stat-card"><div class="stat-title">Due Today</div><div class="stat-value" id="statDueToday">0</div></div>
+      <div class="stat-card"><div class="stat-title">Meetings This Week</div><div class="stat-value" id="statMeetingsThisWeek">0</div></div>
+      <div class="stat-card"><div class="stat-title">Pending Calls</div><div class="stat-value" id="statPendingCalls">0</div></div>
+      <div class="stat-card"><div class="stat-title">Active Clients</div><div class="stat-value" id="statActiveClients">0</div></div>
+      <div class="stat-card"><div class="stat-title">Won This Month</div><div class="stat-value" id="statWonThisMonth">0</div></div>
+      <div class="stat-card"><div class="stat-title">Total Quotations</div><div class="stat-value" id="statTotalQuotations">0</div></div>
+    </section>
+    <section class="actions-bar">
+      <button id="addClientBtn" class="lux-btn"><i data-lucide="plus"></i> Add Client</button>
+      <input type="text" id="searchClients" placeholder="Search clients..." />
+    </section>
+    <section class="dashboard-content">
+      <div class="card client-table-card">
+        <div class="card-title"><i data-lucide="users"></i> Clients</div>
+        <div class="card-body">
+          <table class="client-table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Salesperson</th>
+                <th>Next Action</th>
+                <th>Next Follow-Up</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clientTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card tasks-card">
+        <div class="card-title"><i data-lucide="check-square"></i> Tasks</div>
+        <div class="card-body tasks-container">
+          <div>
+            <h3>Hamdi</h3>
+            <div id="hamdiTaskList"></div>
+          </div>
+          <div>
+            <h3>Dina</h3>
+            <div id="dinaTaskList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Modals -->
+  <div class="modal" id="clientModal">
+    <div class="modal-content">
+      <span class="close" id="closeClientModal">×</span>
+      <h2 id="modalTitle">Add New Client</h2>
+      <form id="clientForm">
+        <input type="hidden" id="clientId" />
+        <label>Company Name <input type="text" id="companyName" required /></label>
+        <label>Contact Person <input type="text" id="contactPerson" required /></label>
+        <label>Email <input type="email" id="email" /></label>
+        <label>Phone <input type="text" id="phone" /></label>
+        <label>Salesperson
+          <select id="Salesperson">
+            <option value="">Select</option>
+            <option value="Hamdi">Hamdi</option>
+            <option value="Dina">Dina</option>
+          </select>
+        </label>
+        <label>Current Stage <input type="text" id="currentStage" /></label>
+        <label>Next Action <input type="text" id="nextAction" /></label>
+        <label>Next Follow-Up <input type="date" id="nextFollowUp" /></label>
+        <label>Quotation Amount <input type="number" id="QuoteAmount" /></label>
+        <button type="submit" class="lux-btn">Save</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="clientDetailsModal">
+    <div class="modal-content">
+      <span class="close" id="closeClientDetailsModal">×</span>
+      <h2 id="detailsModalTitle"></h2>
+      <div id="clientDetailsContent"></div>
+      <label>Notes
+        <textarea id="clientNotes"></textarea>
+      </label>
+      <button id="saveNotesBtn" class="lux-btn">Save Notes</button>
+      <button id="editFromDetailsBtn" class="lux-btn">Edit</button>
+    </div>
+  </div>
+  <div class="modal" id="emailModal">
+    <div class="modal-content">
+      <span class="close" id="closeEmailModal">×</span>
+      <h2>Email Client</h2>
+      <div>
+        <button class="email-template-btn" data-template="initial">Initial Contact</button>
+        <button class="email-template-btn" data-template="followUp">Follow Up</button>
+        <button class="email-template-btn" data-template="proposal">Proposal</button>
+      </div>
+      <button id="sendEmailBtn" class="lux-btn">Send Email</button>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
